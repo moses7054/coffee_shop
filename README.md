@@ -42,3 +42,5 @@ cargo run
 ```
 
 This executes the workflow in `capabilities::invoke()`, demonstrating a complete order lifecycle from placement to serving.
+
+*readme generated using llm*
