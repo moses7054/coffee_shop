@@ -44,7 +44,7 @@ impl OrderBuilder<NeedsCoffee> {
 }
 
 impl OrderBuilder<NeedsSize> {
-     pub fn size(self, size: Size) -> OrderBuilder<ReadyToBuild> {
+    pub fn size(self, size: Size) -> OrderBuilder<ReadyToBuild> {
         OrderBuilder {
             coffee: self.coffee,
             size: Some(size),
@@ -56,30 +56,33 @@ impl OrderBuilder<NeedsSize> {
     }
 }
 
-impl OrderBuilder<ReadyToBuild>{
+impl OrderBuilder<ReadyToBuild> {
     pub fn milk(mut self, milk: Milk) -> Self {
         self.milk = milk;
         self
     }
 
-     pub fn extra(mut self, extra: Extra) -> Self {
+    pub fn extra(mut self, extra: Extra) -> Self {
         self.extras.push(extra);
         self
     }
 
     pub fn build(self) -> OrderDetails {
-        OrderDetails { coffee: self.coffee.unwrap(), size: self.size.unwrap(), milk: self.milk, extras: self.extras, customer_name: self.customer_name }
+        OrderDetails {
+            coffee: self.coffee.unwrap(),
+            size: self.size.unwrap(),
+            milk: self.milk,
+            extras: self.extras,
+            customer_name: self.customer_name,
+        }
     }
 }
 
-
 pub fn demo_builder() {
-
     let sample = OrderBuilder::new("ron")
-    .coffee(CoffeeType::Americano)
-    .size(Size::Large)
-    .extra(Extra::Decaf)
-    .extra(Extra::Syrup(SyrupFlavor::Caramel))
-    .build();
-    
+        .coffee(CoffeeType::Americano)
+        .size(Size::Large)
+        .extra(Extra::Decaf)
+        .extra(Extra::Syrup(SyrupFlavor::Caramel))
+        .build();
 }

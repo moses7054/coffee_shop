@@ -1,14 +1,11 @@
-
-
 use super::builder::{OrderBuilder, ReadyToBuild};
-use super::typestate::{Order, Customized, Paid, Pending, Preparing, Ready};
-
+use super::typestate::{Customized, Order, Paid, Pending, Preparing, Ready};
 
 pub trait CanOrder {
     fn place_order(&self, builder: OrderBuilder<ReadyToBuild>) -> Order<Pending>;
 }
 
-pub trait CanCharge{
+pub trait CanCharge {
     fn charge(&self, order: Order<Customized>) -> Order<Paid>;
 }
 
@@ -22,15 +19,15 @@ pub struct Customer {
 }
 
 pub struct Cashier {
-    pub name: String
+    pub name: String,
 }
 
 pub struct Barista {
-    pub name: String
+    pub name: String,
 }
 
 pub struct Manager {
-    pub name: String
+    pub name: String,
 }
 
 impl CanOrder for Customer {
@@ -39,7 +36,6 @@ impl CanOrder for Customer {
         Order::new(builder)
     }
 }
-
 
 impl CanOrder for Manager {
     fn place_order(&self, builder: OrderBuilder<ReadyToBuild>) -> Order<Pending> {
@@ -55,14 +51,12 @@ impl CanCharge for Cashier {
     }
 }
 
-
 impl CanCharge for Manager {
     fn charge(&self, order: Order<Customized>) -> Order<Paid> {
         println!(" Manager {} processed payment", self.name);
         order.pay()
     }
 }
-
 
 impl CanPrepare for Barista {
     fn start(&self, order: Order<Paid>) -> Order<Preparing> {
@@ -96,14 +90,20 @@ pub fn run_bar_workflow<P: CanPrepare>(preparer: &P, order: Order<Paid>) -> Orde
 pub fn invoke() {
     use super::enums::CoffeeType;
 
-    let customer = Customer {name: "glacier".to_string()};
-    let cashier = Cashier {name: "cashier".to_string()};
-    let barista = Barista {name: "barista".to_string()};
+    let customer = Customer {
+        name: "glacier".to_string(),
+    };
+    let cashier = Cashier {
+        name: "cashier".to_string(),
+    };
+    let barista = Barista {
+        name: "barista".to_string(),
+    };
 
     let builder = OrderBuilder::new("glacier")
-    .coffee(CoffeeType::Americano)
-    .size(crate::enums::Size::Large)
-    .milk(crate::enums::Milk::Almond);
+        .coffee(CoffeeType::Americano)
+        .size(crate::enums::Size::Large)
+        .milk(crate::enums::Milk::Almond);
 
     let pending = customer.place_order(builder);
     dbg!(&pending);
